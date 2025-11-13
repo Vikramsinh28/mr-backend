@@ -798,6 +798,61 @@ export const validateCreateDepartment = [
 ];
 
 /**
+ * Create doctor validation rules
+ */
+export const validateCreateDoctor = [
+    // Require either doctor_name (snake_case) or doctorName (camelCase)
+    body().custom((_, { req }) => {
+        if (!req.body.doctor_name && !req.body.doctorName) {
+            throw new Error('Doctor Name is required');
+        }
+        return true;
+    }),
+    body('doctor_name').optional().trim().isLength({ max: 100 }).withMessage('Doctor Name must be at most 100 characters'),
+    body('doctorName').optional().trim().isLength({ max: 100 }).withMessage('Doctor Name must be at most 100 characters'),
+    body('specialty').optional().trim().isLength({ max: 100 }).withMessage('Specialty must be at most 100 characters'),
+    body('hospital').optional().trim().isLength({ max: 150 }).withMessage('Hospital must be at most 150 characters'),
+    body('location').optional().trim().isLength({ max: 150 }).withMessage('Location must be at most 150 characters'),
+    body('phone').optional().trim().isLength({ max: 20 }).withMessage('Phone must be at most 20 characters'),
+    body('email').optional().trim().isEmail().withMessage('Invalid email format').normalizeEmail(),
+    body('experience_years').optional().isInt({ min: 0 }).withMessage('Experience (years) must be a non-negative integer'),
+    body('experienceYears').optional().isInt({ min: 0 }).withMessage('Experience (years) must be a non-negative integer'),
+    body('consultation_fee').optional().isDecimal().withMessage('Consultation Fee must be a decimal number'),
+    body('consultationFee').optional().isDecimal().withMessage('Consultation Fee must be a decimal number'),
+    body('status').optional().trim().isLength({ max: 50 }).withMessage('Status must be at most 50 characters'),
+    body('qualification').optional().trim().isLength({ max: 255 }).withMessage('Qualification must be at most 255 characters'),
+    body('availability').optional().isObject().withMessage('Availability must be an object'),
+    body('notes').optional().trim().isLength({ max: 5000 }).withMessage('Notes must be at most 5000 characters'),
+    body('preferred_doctor').optional().isBoolean().withMessage('Preferred doctor must be a boolean'),
+    body('preferredDoctor').optional().isBoolean().withMessage('Preferred doctor must be a boolean'),
+    handleValidationErrors
+];
+
+/**
+ * Update doctor validation rules
+ */
+export const validateUpdateDoctor = [
+    body('doctor_name').optional().trim().isLength({ max: 100 }).withMessage('Doctor Name must be at most 100 characters'),
+    body('doctorName').optional().trim().isLength({ max: 100 }).withMessage('Doctor Name must be at most 100 characters'),
+    body('specialty').optional().trim().isLength({ max: 100 }).withMessage('Specialty must be at most 100 characters'),
+    body('hospital').optional().trim().isLength({ max: 150 }).withMessage('Hospital must be at most 150 characters'),
+    body('location').optional().trim().isLength({ max: 150 }).withMessage('Location must be at most 150 characters'),
+    body('phone').optional().trim().isLength({ max: 20 }).withMessage('Phone must be at most 20 characters'),
+    body('email').optional().trim().isEmail().withMessage('Invalid email format').normalizeEmail(),
+    body('experience_years').optional().isInt({ min: 0 }).withMessage('Experience (years) must be a non-negative integer'),
+    body('experienceYears').optional().isInt({ min: 0 }).withMessage('Experience (years) must be a non-negative integer'),
+    body('consultation_fee').optional().isDecimal().withMessage('Consultation Fee must be a decimal number'),
+    body('consultationFee').optional().isDecimal().withMessage('Consultation Fee must be a decimal number'),
+    body('status').optional().trim().isLength({ max: 50 }).withMessage('Status must be at most 50 characters'),
+    body('qualification').optional().trim().isLength({ max: 255 }).withMessage('Qualification must be at most 255 characters'),
+    body('availability').optional().isObject().withMessage('Availability must be an object'),
+    body('notes').optional().trim().isLength({ max: 5000 }).withMessage('Notes must be at most 5000 characters'),
+    body('preferred_doctor').optional().isBoolean().withMessage('Preferred doctor must be a boolean'),
+    body('preferredDoctor').optional().isBoolean().withMessage('Preferred doctor must be a boolean'),
+    handleValidationErrors
+];
+
+/**
  * Update department validation rules
  */
 export const validateUpdateDepartment = [
@@ -880,5 +935,172 @@ export const validateRemoveUsersFromDepartment = [
     })
     .withMessage('userIds must be an array of positive integers'),
 
+    handleValidationErrors
+];
+
+/**
+ * Create category validation rules
+ */
+export const validateCreateCategory = [
+    body('category_name').optional().trim().isLength({ max: 100 }).withMessage('Category name must be at most 100 characters'),
+    body('categoryName').optional().trim().isLength({ max: 100 }).withMessage('Category name must be at most 100 characters'),
+    body().custom((_, { req }) => { if (!req.body.category_name && !req.body.categoryName) throw new Error('Category name is required'); return true; }),
+    body('description').optional().trim().isLength({ max: 5000 }).withMessage('Description must be at most 5000 characters'),
+    handleValidationErrors
+];
+
+export const validateUpdateCategory = [
+    body('category_name').optional().trim().isLength({ max: 100 }).withMessage('Category name must be at most 100 characters'),
+    body('categoryName').optional().trim().isLength({ max: 100 }).withMessage('Category name must be at most 100 characters'),
+    body('description').optional().trim().isLength({ max: 5000 }).withMessage('Description must be at most 5000 characters'),
+    handleValidationErrors
+];
+
+/**
+ * Create product validation rules
+ */
+export const validateCreateProduct = [
+    body('name').trim().notEmpty().withMessage('Product name is required').isLength({ max: 150 }).withMessage('Product name must be at most 150 characters'),
+    body('price').notEmpty().withMessage('Price is required').isDecimal().withMessage('Price must be a decimal number'),
+    body('description').optional().trim().isLength({ max: 5000 }).withMessage('Description must be at most 5000 characters'),
+    body('category_id').optional().isInt({ min: 1 }).withMessage('category_id must be a positive integer'),
+    body('categoryId').optional().isInt({ min: 1 }).withMessage('categoryId must be a positive integer'),
+    body().custom((_, { req }) => { if (!req.body.category_id && !req.body.categoryId) throw new Error('Category is required'); return true; }),
+    handleValidationErrors
+];
+
+export const validateUpdateProduct = [
+    body('name').optional().trim().isLength({ max: 150 }).withMessage('Product name must be at most 150 characters'),
+    body('price').optional().isDecimal().withMessage('Price must be a decimal number'),
+    body('description').optional().trim().isLength({ max: 5000 }).withMessage('Description must be at most 5000 characters'),
+    body('category_id').optional().isInt({ min: 1 }).withMessage('category_id must be a positive integer'),
+    body('categoryId').optional().isInt({ min: 1 }).withMessage('categoryId must be a positive integer'),
+    handleValidationErrors
+];
+
+/**
+ * Create expense validation rules
+ */
+export const validateCreateExpense = [
+    body('expenseType')
+        .trim()
+        .notEmpty().withMessage('Expense Type is required')
+        .isLength({ max: 50 }).withMessage('Expense Type must be at most 50 characters'),
+
+    body('amount')
+        .notEmpty().withMessage('Amount is required')
+        .isDecimal().withMessage('Amount must be a decimal number'),
+
+    body('date')
+        .notEmpty().withMessage('Date is required')
+        .isISO8601().withMessage('Date must be a valid date'),
+
+    body('description')
+        .optional()
+        .trim()
+        .isLength({ max: 5000 }).withMessage('Description must be at most 5000 characters'),
+
+    body('receiptUrl')
+        .optional()
+        .trim()
+        .isURL().withMessage('Receipt URL must be a valid URL'),
+
+    handleValidationErrors
+];
+
+/**
+ * Update expense validation rules
+ */
+export const validateUpdateExpense = [
+    body('expenseType')
+        .optional()
+        .trim()
+        .isLength({ max: 50 }).withMessage('Expense Type must be at most 50 characters'),
+
+    body('amount')
+        .optional()
+        .isDecimal().withMessage('Amount must be a decimal number'),
+
+    body('date')
+        .optional()
+        .isISO8601().withMessage('Date must be a valid date'),
+
+    body('description')
+        .optional()
+        .trim()
+        .isLength({ max: 5000 }).withMessage('Description must be at most 5000 characters'),
+
+    body('receiptUrl')
+        .optional()
+        .trim()
+        .isURL().withMessage('Receipt URL must be a valid URL'),
+
+    handleValidationErrors
+];
+
+/**
+ * Doctor-Product validations
+ */
+export const validateCreateDoctorProdct = [
+    body('p_id').notEmpty().withMessage('p_id is required').isInt({ min: 1 }).withMessage('p_id must be a positive integer'),
+    body('dr_id').notEmpty().withMessage('dr_id is required').isInt({ min: 1 }).withMessage('dr_id must be a positive integer'),
+    body('quantity').optional().isInt({ min: 0 }).withMessage('quantity must be a non-negative integer'),
+    body('product_note').optional().trim().isLength({ max: 5000 }).withMessage('product note must be at most 5000 characters'),
+    handleValidationErrors
+];
+
+export const validateUpdateDoctorProdct = [
+    body('p_id').optional().isInt({ min: 1 }).withMessage('p_id must be a positive integer'),
+    body('dr_id').optional().isInt({ min: 1 }).withMessage('dr_id must be a positive integer'),
+    body('quantity').optional().isInt({ min: 0 }).withMessage('quantity must be a non-negative integer'),
+    body('product_note').optional().trim().isLength({ max: 5000 }).withMessage('product note must be at most 5000 characters'),
+    handleValidationErrors
+];
+
+export const validateAdjustQuantity = [
+    param('id').isInt({ min: 1 }).withMessage('ID must be a positive integer'),
+    body('amount').optional().isInt({ min: 1 }).withMessage('amount must be a positive integer'),
+    handleValidationErrors
+];
+
+/**
+ * Approve expense validation rules
+ */
+export const validateApproveExpense = [
+    param('id')
+        .isInt({ min: 1 })
+        .withMessage('ID must be a positive integer'),
+    handleValidationErrors
+];
+
+// Visit planning validations
+export const validateCreateVisitPlanning = [
+    body('city').trim().notEmpty().withMessage('city is required'),
+    body('purpose_of_visit').optional().trim().isLength({ max: 255 }).withMessage('purpose_of_visit must be at most 255 characters'),
+    body('notes').optional().trim().isLength({ max: 5000 }).withMessage('notes must be at most 5000 characters'),
+    body('visit_date').notEmpty().withMessage('visit_date is required').isISO8601().withMessage('visit_date must be a valid date'),
+    handleValidationErrors
+];
+
+export const validateUpdateVisitPlanning = [
+    body('city').optional().trim().isLength({ max: 255 }).withMessage('city must be at most 255 characters'),
+    body('purpose_of_visit').optional().trim().isLength({ max: 255 }).withMessage('purpose_of_visit must be at most 255 characters'),
+    body('notes').optional().trim().isLength({ max: 5000 }).withMessage('notes must be at most 5000 characters'),
+    body('visit_date').optional().isISO8601().withMessage('visit_date must be a valid date'),
+    handleValidationErrors
+];
+
+// Complete visit validations
+export const validateCreateCompleteVisit = [
+    body('dr_id').notEmpty().withMessage('dr_id is required').isInt({ min: 1 }).withMessage('dr_id must be a positive integer'),
+    body('visit_planning_id').notEmpty().withMessage('visit_planning_id is required').isInt({ min: 1 }).withMessage('visit_planning_id must be a positive integer'),
+    body('visited_by').optional().isInt({ min: 1 }).withMessage('visited_by must be a positive integer'),
+    handleValidationErrors
+];
+
+export const validateUpdateCompleteVisit = [
+    body('dr_id').optional().isInt({ min: 1 }).withMessage('dr_id must be a positive integer'),
+    body('visit_planning_id').optional().isInt({ min: 1 }).withMessage('visit_planning_id must be a positive integer'),
+    body('visited_by').optional().isInt({ min: 1 }).withMessage('visited_by must be a positive integer'),
     handleValidationErrors
 ];

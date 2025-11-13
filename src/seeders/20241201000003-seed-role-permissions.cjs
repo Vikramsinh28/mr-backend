@@ -36,8 +36,8 @@ module.exports = {
       assignedAt: new Date()
     }));
 
-    // Editor gets: user.view, user.edit, role.view, permission.view, company.view, company.edit, department.view, department.edit
-    // Editors can view and edit company profiles and manage departments
+    // Editor gets: user.view, user.edit, role.view, permission.view, company.view, company.edit, department.view, department.edit, expense.view, expense.edit
+    // Editors can view and edit company profiles, manage departments, and manage expenses (except approval)
     const editorPermissions = [
       permissionMap['user.view'],
       permissionMap['user.edit'],
@@ -46,21 +46,27 @@ module.exports = {
       permissionMap['company.view'],
       permissionMap['company.edit'],
       permissionMap['department.view'],
-      permissionMap['department.edit']
+      permissionMap['department.edit'],
+      permissionMap['expense.view'],
+      permissionMap['expense.edit'],
+      permissionMap['doctor.view'],
+      permissionMap['doctor.edit']
     ].filter(Boolean).map(permissionId => ({
       roleId: roleMap['editor'],
       permissionId: permissionId,
       assignedAt: new Date()
     }));
 
-    // Viewer gets: user.view, role.view, permission.view, company.view, department.view
-    // Viewers can view company and department information but cannot edit
+    // Viewer gets: user.view, role.view, permission.view, company.view, department.view, expense.view
+    // Viewers can view company, department information and expenses but cannot edit
     const viewerPermissions = [
       permissionMap['user.view'],
       permissionMap['role.view'],
       permissionMap['permission.view'],
       permissionMap['company.view'],
-      permissionMap['department.view']
+      permissionMap['department.view'],
+      permissionMap['expense.view'],
+      permissionMap['doctor.view']
     ].filter(Boolean).map(permissionId => ({
       roleId: roleMap['viewer'],
       permissionId: permissionId,

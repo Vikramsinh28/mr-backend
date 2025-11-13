@@ -72,6 +72,21 @@ app.get('/', (req, res) => {
         create: 'POST /api/permissions',
         update: 'PATCH /api/permissions/:id',
         delete: 'DELETE /api/permissions/:id'
+      },
+      expenses: {
+        list: 'GET /api/expenses',
+        get: 'GET /api/expenses/:id',
+        create: 'POST /api/expenses',
+        update: 'PATCH /api/expenses/:id',
+        delete: 'DELETE /api/expenses/:id',
+        approve: 'POST /api/expenses/:id/approve'
+      },
+      doctors: {
+        list: 'GET /api/doctors',
+        get: 'GET /api/doctors/:id',
+        create: 'POST /api/doctors',
+        update: 'PATCH /api/doctors/:id',
+        delete: 'DELETE /api/doctors/:id'
       }
     }
   });
