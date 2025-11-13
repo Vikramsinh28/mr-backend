@@ -1,143 +1,142 @@
 // Swagger configuration - imports all schemas and paths
-import swaggerJsdoc from 'swagger-jsdoc';
-import {
-  fileURLToPath
-} from 'url';
-import {
-  dirname,
-  join
-} from 'path';
+import swaggerJsdoc from "swagger-jsdoc";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
-const __filename = fileURLToPath(
-  import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Import all schemas
-import UserSchema from './components/schemas/UserSchema.js';
-import RoleSchema from './components/schemas/RoleSchema.js';
-import PermissionSchema from './components/schemas/PermissionSchema.js';
-import DepartmentSchema from './components/schemas/DepartmentSchema.js';
-import ExpenseSchema from './components/schemas/ExpenseSchema.js';
-import DoctorSchema from './components/schemas/DoctorSchema.js';
+import UserSchema from "./components/schemas/UserSchema.js";
+import ExpenseSchema from "./components/schemas/ExpenseSchema.js";
+import DoctorSchema from "./components/schemas/DoctorSchema.js";
 
 // Import all paths
-import authPaths from './components/paths/authPaths.js';
-import expensePaths from './components/paths/expensePaths.js';
-import doctorPaths from './components/paths/doctorPaths.js';
+import authPaths from "./components/paths/authPaths.js";
+import expensePaths from "./components/paths/expensePaths.js";
+import doctorPaths from "./components/paths/doctorPaths.js";
 
 /**
  * Swagger OpenAPI 3.0 Configuration
  * Dynamically loads all schemas and paths from components folder
  */
 const swaggerDefinition = {
-  openapi: '3.0.0',
+  openapi: "3.0.0",
   info: {
-    title: 'Node.js RBAC CRM API',
-    version: '1.0.0',
-    description: 'Comprehensive API documentation for the Node.js RBAC (Role-Based Access Control) CRM system. This API provides authentication, user management, role management, and permission management capabilities.',
+    title: "Node.js MR API",
+    version: "1.0.0",
+    description:
+      "Comprehensive API documentation for the Node.js RBAC (Role-Based Access Control). This API provides authentication, user management, role management, and permission management capabilities.",
     contact: {
-      name: 'API Support',
-      email: 'support@example.com'
+      name: "API Support",
+      email: "support@example.com",
     },
     license: {
-      name: 'ISC',
-      url: 'https://opensource.org/licenses/ISC'
-    }
+      name: "ISC",
+      url: "https://opensource.org/licenses/ISC",
+    },
   },
-  servers: [{
-      url: process.env.API_URL || 'http://localhost:3000',
-      description: process.env.NODE_ENV === 'production' ? 'Production Server' : 'Local Development Server'
+  servers: [
+    {
+      url: process.env.API_URL || "http://localhost:3000",
+      description:
+        process.env.NODE_ENV === "production"
+          ? "Production Server"
+          : "Local Development Server",
     },
     {
-      url: 'http://localhost:3000',
-      description: 'Local Server (default)'
-    }
+      url: "http://localhost:3000",
+      description: "Local Server (default)",
+    },
   ],
-  tags: [{
-      name: 'Auth',
-      description: 'Authentication endpoints - Register, login, and get current user'
+  tags: [
+    {
+      name: "Auth",
+      description:
+        "Authentication endpoints - Register, login, and get current user",
     },
     {
-      name: 'Users',
-      description: 'User management endpoints - CRUD operations for users'
+      name: "Users",
+      description: "User management endpoints - CRUD operations for users",
     },
     {
-      name: 'Roles',
-      description: 'Role management endpoints - Create, read, update, and delete roles'
+      name: "Roles",
+      description:
+        "Role management endpoints - Create, read, update, and delete roles",
     },
     {
-      name: 'Permissions',
-      description: 'Permission management endpoints - Manage system permissions'
+      name: "Permissions",
+      description:
+        "Permission management endpoints - Manage system permissions",
     },
     {
-      name: 'Companies',
-      description: 'Company management endpoints - CRUD operations for companies'
+      name: "Companies",
+      description:
+        "Company management endpoints - CRUD operations for companies",
     },
     {
-      name: 'Departments',
-      description: 'Department management endpoints - CRUD operations for departments and user assignments'
+      name: "Departments",
+      description:
+        "Department management endpoints - CRUD operations for departments and user assignments",
     },
     {
-      name: 'Expenses',
-      description: 'Expense management endpoints - CRUD operations and approvals for user expenses'
+      name: "Expenses",
+      description:
+        "Expense management endpoints - CRUD operations and approvals for user expenses",
     },
     {
-      name: 'Doctors',
-      description: 'Doctor management endpoints - CRUD operations for doctors'
-    }
+      name: "Doctors",
+      description: "Doctor management endpoints - CRUD operations for doctors",
+    },
   ],
   components: {
     securitySchemes: {
       bearerAuth: {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-        description: 'Enter your JWT token in the format: Bearer <token>'
-      }
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+        description: "Enter your JWT token in the format: Bearer <token>",
+      },
     },
     schemas: {},
     responses: {
       UnauthorizedError: {
-        description: 'Authentication required or token is invalid',
+        description: "Authentication required or token is invalid",
         content: {
-          'application/json': {
+          "application/json": {
             schema: {
-              $ref: '#/components/schemas/ErrorResponse'
-            }
-          }
-        }
+              $ref: "#/components/schemas/ErrorResponse",
+            },
+          },
+        },
       },
       NotFoundError: {
-        description: 'Resource not found',
+        description: "Resource not found",
         content: {
-          'application/json': {
+          "application/json": {
             schema: {
-              $ref: '#/components/schemas/ErrorResponse'
-            }
-          }
-        }
+              $ref: "#/components/schemas/ErrorResponse",
+            },
+          },
+        },
       },
       ValidationError: {
-        description: 'Validation error',
+        description: "Validation error",
         content: {
-          'application/json': {
+          "application/json": {
             schema: {
-              $ref: '#/components/schemas/ErrorResponse'
-            }
-          }
-        }
-      }
-    }
+              $ref: "#/components/schemas/ErrorResponse",
+            },
+          },
+        },
+      },
+    },
   },
-  paths: {}
+  paths: {},
 };
 
 // Merge all schemas
 Object.assign(swaggerDefinition.components.schemas, UserSchema);
-Object.assign(swaggerDefinition.components.schemas, RoleSchema);
-Object.assign(swaggerDefinition.components.schemas, PermissionSchema);
-Object.assign(swaggerDefinition.components.schemas, DepartmentSchema);
-Object.assign(swaggerDefinition.components.schemas, ExpenseSchema);
 Object.assign(swaggerDefinition.components.schemas, DoctorSchema);
 
 // Merge paths from components folder (authPaths)
@@ -153,14 +152,14 @@ if (doctorPaths && Object.keys(doctorPaths).length > 0) {
 
 // Configure swagger-jsdoc to scan route files
 // __dirname is src/docs, so we need to go up one level to src, then into routes
-const routesPath = join(__dirname, '../routes/**/*.js');
-const controllersPath = join(__dirname, '../controllers/**/*.js');
+const routesPath = join(__dirname, "../routes/**/*.js");
+const controllersPath = join(__dirname, "../controllers/**/*.js");
 
 const options = {
   definition: swaggerDefinition,
   apis: [
     routesPath, // Scan all route files
-    controllersPath // Scan controller files too
+    controllersPath, // Scan controller files too
   ],
 };
 

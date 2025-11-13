@@ -1,116 +1,103 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import swaggerUi from 'swagger-ui-express';
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import swaggerUi from "swagger-ui-express";
 
 // Load environment variables
 dotenv.config();
 
 // Import routes
-import apiRoutes from './routes/index.js';
+import apiRoutes from "./routes/index.js";
 
 // Import Swagger documentation
-import swaggerSpec from './docs/swagger.js';
+import swaggerSpec from "./docs/swagger.js";
 
 // Import error handler
-import {
-  errorHandler
-} from './middlewares/errorHandler.js';
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({
-  extended: true
-}));
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
 
 // Basic health check route
-app.get('/health', (req, res) => {
+app.get("/health", (req, res) => {
   res.json({
-    status: 'ok',
-    message: 'RBAC CRM API is running'
+    status: "ok",
+    message: "RBAC CRM API is running",
   });
 });
 
 // Root route
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   res.json({
-    message: 'RBAC CRM API',
-    version: '1.0.0',
-    documentation: '/api/docs',
+    message: "RBAC CRM API",
+    version: "1.0.0",
+    documentation: "/api/docs",
     endpoints: {
-      health: '/health',
-      docs: '/api/docs',
+      health: "/health",
+      docs: "/api/docs",
       auth: {
-        register: 'POST /api/auth/register',
-        login: 'POST /api/auth/login',
-        me: 'GET /api/auth/me',
-        profile: 'GET /api/auth/profile'
+        register: "POST /api/auth/register",
+        login: "POST /api/auth/login",
+        me: "GET /api/auth/me",
+        profile: "GET /api/auth/profile",
       },
       users: {
-        list: 'GET /api/users',
-        get: 'GET /api/users/:id',
-        create: 'POST /api/users',
-        update: 'PATCH /api/users/:id',
-        delete: 'DELETE /api/users/:id'
-      },
-      roles: {
-        list: 'GET /api/roles',
-        get: 'GET /api/roles/:id',
-        create: 'POST /api/roles',
-        update: 'PATCH /api/roles/:id',
-        delete: 'DELETE /api/roles/:id',
-        assignPermissions: 'POST /api/roles/:id/permissions',
-        assignUser: 'POST /api/roles/:roleId/assign-user',
-        removeUser: 'DELETE /api/roles/:roleId/users/:userId'
-      },
-      permissions: {
-        list: 'GET /api/permissions',
-        get: 'GET /api/permissions/:id',
-        create: 'POST /api/permissions',
-        update: 'PATCH /api/permissions/:id',
-        delete: 'DELETE /api/permissions/:id'
+        list: "GET /api/users",
+        get: "GET /api/users/:id",
+        create: "POST /api/users",
+        update: "PATCH /api/users/:id",
+        delete: "DELETE /api/users/:id",
       },
       expenses: {
-        list: 'GET /api/expenses',
-        get: 'GET /api/expenses/:id',
-        create: 'POST /api/expenses',
-        update: 'PATCH /api/expenses/:id',
-        delete: 'DELETE /api/expenses/:id',
-        approve: 'POST /api/expenses/:id/approve'
+        list: "GET /api/expenses",
+        get: "GET /api/expenses/:id",
+        create: "POST /api/expenses",
+        update: "PATCH /api/expenses/:id",
+        delete: "DELETE /api/expenses/:id",
+        approve: "POST /api/expenses/:id/approve",
       },
       doctors: {
-        list: 'GET /api/doctors',
-        get: 'GET /api/doctors/:id',
-        create: 'POST /api/doctors',
-        update: 'PATCH /api/doctors/:id',
-        delete: 'DELETE /api/doctors/:id'
-      }
-    }
+        list: "GET /api/doctors",
+        get: "GET /api/doctors/:id",
+        create: "POST /api/doctors",
+        update: "PATCH /api/doctors/:id",
+        delete: "DELETE /api/doctors/:id",
+      },
+    },
   });
 });
 
 // API Routes
-app.use('/api', apiRoutes);
+app.use("/api", apiRoutes);
 
 // Swagger API Documentation
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
-  customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: 'RBAC CRM API Documentation',
-  customfavIcon: '/favicon.ico'
-}));
+app.use(
+  "/api/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    customCss: ".swagger-ui .topbar { display: none }",
+    customSiteTitle: "RBAC CRM API Documentation",
+    customfavIcon: "/favicon.ico",
+  })
+);
 
 // 404 handler (must be before error handler)
 app.use((req, res) => {
   res.status(404).json({
     success: false,
-    message: 'Route not found',
+    message: "Route not found",
     details: {
       path: req.path,
-      method: req.method
-    }
+      method: req.method,
+    },
   });
 });
 

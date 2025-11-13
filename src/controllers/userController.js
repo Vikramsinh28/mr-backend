@@ -1,7 +1,13 @@
-import { User, Role, UserRole } from '../models/index.js';
-import { Op } from 'sequelize';
-import bcrypt from 'bcryptjs';
-import { success, created, notFound, error as errorResponse, conflict } from '../utils/response.js';
+import { User } from "../models/index.js";
+import { Op } from "sequelize";
+import bcrypt from "bcryptjs";
+import {
+  success,
+  created,
+  notFound,
+  error as errorResponse,
+  conflict,
+} from "../utils/response.js";
 
 /**
  * Get all users
@@ -19,34 +25,26 @@ export async function getAllUsers(req, res, next) {
         { username: { [Op.iLike]: `%${search}%` } },
         { email: { [Op.iLike]: `%${search}%` } },
         { firstName: { [Op.iLike]: `%${search}%` } },
-        { lastName: { [Op.iLike]: `%${search}%` } }
+        { lastName: { [Op.iLike]: `%${search}%` } },
       ];
     }
 
     const { count, rows } = await User.findAndCountAll({
       where,
-      attributes: { exclude: ['password'] },
-      include: [
-        {
-          model: Role,
-          as: 'roles',
-          through: { attributes: [] },
-          required: false
-        }
-      ],
+      attributes: { exclude: ["password"] },
       limit: parseInt(limit),
       offset: parseInt(offset),
-      order: [['createdAt', 'DESC']]
+      order: [["createdAt", "DESC"]],
     });
 
-    return success(res, 'Users retrieved successfully', {
+    return success(res, "Users retrieved successfully", {
       users: rows,
       pagination: {
         total: count,
         page: parseInt(page),
         limit: parseInt(limit),
-        pages: Math.ceil(count / limit)
-      }
+        pages: Math.ceil(count / limit),
+      },
     });
   } catch (err) {
     next(err);
@@ -63,22 +61,22 @@ export async function getUserById(req, res, next) {
     const { id } = req.params;
 
     const user = await User.findByPk(id, {
-      attributes: { exclude: ['password'] },
+      attributes: { exclude: ["password"] },
       include: [
         {
           model: Role,
-          as: 'roles',
+          as: "roles",
           through: { attributes: [] },
-          required: false
-        }
-      ]
+          required: false,
+        },
+      ],
     });
 
     if (!user) {
-      return notFound(res, 'User not found');
+      return notFound(res, "User not found");
     }
 
-    return success(res, 'User retrieved successfully', { user });
+    return success(res, "User retrieved successfully", { user });
   } catch (err) {
     next(err);
   }
@@ -91,26 +89,30 @@ export async function getUserById(req, res, next) {
  */
 export async function createUser(req, res, next) {
   try {
-    const { username, email, password, firstName, lastName, roleIds } = req.body;
+    const { username, email, password, firstName, lastName, roleIds } =
+      req.body;
 
     // Validate required fields
     if (!username || !email || !password) {
       return res.status(400).json({
         success: false,
-        error: 'Username, email, and password are required'
+        error: "Username, email, and password are required",
       });
     }
 
     // Check if user exists
     const existingUser = await User.findOne({
       where: {
-        [Op.or]: [{ email }, { username }]
-      }
+        [Op.or]: [{ email }, { username }],
+      },
     });
 
     if (existingUser) {
-      return conflict(res, 
-        existingUser.email === email ? 'Email already exists' : 'Username already taken'
+      return conflict(
+        res,
+        existingUser.email === email
+          ? "Email already exists"
+          : "Username already taken"
       );
     }
 
@@ -124,7 +126,7 @@ export async function createUser(req, res, next) {
       password: hashedPassword,
       firstName,
       lastName,
-      isActive: true
+      isActive: true,
     });
 
     // Assign roles if provided
@@ -134,11 +136,11 @@ export async function createUser(req, res, next) {
 
     // Reload user with roles
     await user.reload({
-      include: [{ model: Role, as: 'roles', through: { attributes: [] } }],
-      attributes: { exclude: ['password'] }
+      include: [{ model: Role, as: "roles", through: { attributes: [] } }],
+      attributes: { exclude: ["password"] },
     });
 
-    return created(res, 'User created successfully', { user });
+    return created(res, "User created successfully", { user });
   } catch (err) {
     next(err);
   }
@@ -152,14 +154,15 @@ export async function createUser(req, res, next) {
 export async function updateUser(req, res, next) {
   try {
     const { id } = req.params;
-    const { username, email, firstName, lastName, isActive, roleIds } = req.body;
+    const { username, email, firstName, lastName, isActive, roleIds } =
+      req.body;
 
     const user = await User.findByPk(id);
 
     if (!user) {
       return res.status(404).json({
         success: false,
-        error: 'User not found'
+        error: "User not found",
       });
     }
 
@@ -168,13 +171,13 @@ export async function updateUser(req, res, next) {
       const existingUser = await User.findOne({
         where: {
           id: { [Op.ne]: id },
-          [Op.or]: [{ email }, { username }].filter(Boolean)
-        }
+          [Op.or]: [{ email }, { username }].filter(Boolean),
+        },
       });
 
       if (existingUser) {
-      return conflict(res, 'Email or username already taken');
-    }
+        return conflict(res, "Email or username already taken");
+      }
     }
 
     // Update user fields
@@ -193,11 +196,11 @@ export async function updateUser(req, res, next) {
 
     // Reload user with roles
     await user.reload({
-      include: [{ model: Role, as: 'roles', through: { attributes: [] } }],
-      attributes: { exclude: ['password'] }
+      include: [{ model: Role, as: "roles", through: { attributes: [] } }],
+      attributes: { exclude: ["password"] },
     });
 
-    return success(res, 'User updated successfully', { user });
+    return success(res, "User updated successfully", { user });
   } catch (err) {
     next(err);
   }
@@ -214,20 +217,19 @@ export async function deleteUser(req, res, next) {
 
     // Prevent self-deletion
     if (parseInt(id) === req.user.id) {
-      return errorResponse(res, 400, 'You cannot delete your own account');
+      return errorResponse(res, 400, "You cannot delete your own account");
     }
 
     const user = await User.findByPk(id);
 
     if (!user) {
-      return notFound(res, 'User not found');
+      return notFound(res, "User not found");
     }
 
     await user.destroy();
 
-    return success(res, 'User deleted successfully');
+    return success(res, "User deleted successfully");
   } catch (err) {
     next(err);
   }
 }
-
