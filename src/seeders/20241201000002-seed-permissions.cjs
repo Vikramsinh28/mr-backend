@@ -152,6 +152,151 @@ module.exports = {
                 action: 'delete',
                 createdAt: new Date(),
                 updatedAt: new Date()
+            },
+            // Expense permissions
+            {
+                name: 'expense.view',
+                description: 'View expenses',
+                resource: 'expense',
+                action: 'view',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                name: 'expense.create',
+                description: 'Create expenses',
+                resource: 'expense',
+                action: 'create',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                name: 'expense.edit',
+                description: 'Edit expenses',
+                resource: 'expense',
+                action: 'edit',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                name: 'expense.delete',
+                description: 'Delete expenses',
+                resource: 'expense',
+                action: 'delete',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                name: 'expense.approve',
+                description: 'Approve expenses',
+                resource: 'expense',
+                action: 'approve',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            // Doctor permissions
+            {
+                name: 'doctor.view',
+                description: 'View doctors',
+                resource: 'doctor',
+                action: 'view',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            // Category permissions
+            {
+                name: 'category.view',
+                description: 'View categories',
+                resource: 'category',
+                action: 'view',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                name: 'category.create',
+                description: 'Create categories',
+                resource: 'category',
+                action: 'create',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                name: 'category.edit',
+                description: 'Edit categories',
+                resource: 'category',
+                action: 'edit',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                name: 'category.delete',
+                description: 'Delete categories',
+                resource: 'category',
+                action: 'delete',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            // Product permissions
+            {
+                name: 'product.view',
+                description: 'View products',
+                resource: 'product',
+                action: 'view',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                name: 'product.create',
+                description: 'Create products',
+                resource: 'product',
+                action: 'create',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                name: 'product.edit',
+                description: 'Edit products',
+                resource: 'product',
+                action: 'edit',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                name: 'product.delete',
+                description: 'Delete products',
+                resource: 'product',
+                action: 'delete',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            // Doctor-Product permissions
+            { name: 'doctorProdct.view', description: 'View doctor-product assignments', resource: 'doctorProdct', action: 'view', createdAt: new Date(), updatedAt: new Date() },
+            { name: 'doctorProdct.create', description: 'Create doctor-product assignments', resource: 'doctorProdct', action: 'create', createdAt: new Date(), updatedAt: new Date() },
+            { name: 'doctorProdct.edit', description: 'Edit doctor-product assignments', resource: 'doctorProdct', action: 'edit', createdAt: new Date(), updatedAt: new Date() },
+            { name: 'doctorProdct.delete', description: 'Delete doctor-product assignments', resource: 'doctorProdct', action: 'delete', createdAt: new Date(), updatedAt: new Date() },
+            {
+                name: 'doctor.create',
+                description: 'Create doctors',
+                resource: 'doctor',
+                action: 'create',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                name: 'doctor.edit',
+                description: 'Edit doctors',
+                resource: 'doctor',
+                action: 'edit',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            },
+            {
+                name: 'doctor.delete',
+                description: 'Delete doctors',
+                resource: 'doctor',
+                action: 'delete',
+                createdAt: new Date(),
+                updatedAt: new Date()
             }
         ];
 
@@ -180,7 +325,12 @@ module.exports = {
                     'role.view', 'role.create', 'role.edit', 'role.delete',
                     'permission.view', 'permission.assign',
                     'company.view', 'company.create', 'company.edit', 'company.delete',
-                    'department.view', 'department.create', 'department.edit', 'department.delete'
+                    'department.view', 'department.create', 'department.edit', 'department.delete',
+                    'expense.view', 'expense.create', 'expense.edit', 'expense.delete', 'expense.approve',
+                    'doctor.view', 'doctor.create', 'doctor.edit', 'doctor.delete',
+                    'category.view', 'category.create', 'category.edit', 'category.delete',
+                    'product.view', 'product.create', 'product.edit', 'product.delete',
+                    'doctorProdct.view', 'doctorProdct.create', 'doctorProdct.edit', 'doctorProdct.delete'
                 ]
             }
         }, {});

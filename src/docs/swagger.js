@@ -17,9 +17,13 @@ import UserSchema from './components/schemas/UserSchema.js';
 import RoleSchema from './components/schemas/RoleSchema.js';
 import PermissionSchema from './components/schemas/PermissionSchema.js';
 import DepartmentSchema from './components/schemas/DepartmentSchema.js';
+import ExpenseSchema from './components/schemas/ExpenseSchema.js';
+import DoctorSchema from './components/schemas/DoctorSchema.js';
 
 // Import all paths
 import authPaths from './components/paths/authPaths.js';
+import expensePaths from './components/paths/expensePaths.js';
+import doctorPaths from './components/paths/doctorPaths.js';
 
 /**
  * Swagger OpenAPI 3.0 Configuration
@@ -72,6 +76,14 @@ const swaggerDefinition = {
     {
       name: 'Departments',
       description: 'Department management endpoints - CRUD operations for departments and user assignments'
+    },
+    {
+      name: 'Expenses',
+      description: 'Expense management endpoints - CRUD operations and approvals for user expenses'
+    },
+    {
+      name: 'Doctors',
+      description: 'Doctor management endpoints - CRUD operations for doctors'
     }
   ],
   components: {
@@ -125,10 +137,18 @@ Object.assign(swaggerDefinition.components.schemas, UserSchema);
 Object.assign(swaggerDefinition.components.schemas, RoleSchema);
 Object.assign(swaggerDefinition.components.schemas, PermissionSchema);
 Object.assign(swaggerDefinition.components.schemas, DepartmentSchema);
+Object.assign(swaggerDefinition.components.schemas, ExpenseSchema);
+Object.assign(swaggerDefinition.components.schemas, DoctorSchema);
 
 // Merge paths from components folder (authPaths)
 if (authPaths && Object.keys(authPaths).length > 0) {
   Object.assign(swaggerDefinition.paths, authPaths);
+}
+if (expensePaths && Object.keys(expensePaths).length > 0) {
+  Object.assign(swaggerDefinition.paths, expensePaths);
+}
+if (doctorPaths && Object.keys(doctorPaths).length > 0) {
+  Object.assign(swaggerDefinition.paths, doctorPaths);
 }
 
 // Configure swagger-jsdoc to scan route files
